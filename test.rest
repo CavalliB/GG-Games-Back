@@ -1,0 +1,38 @@
+### Registrar usuario
+POST https://reimagined-robot-qrvrj9qp56wfxrp6-5000.app.github.dev/api/register
+Content-Type: application/json
+
+{
+  "nombreUsuario": "bruno",
+  "Email": "bruno@test.com",
+  "Contraseña": "12345"
+}
+
+###
+
+### Login
+POST https://reimagined-robot-qrvrj9qp56wfxrp6-5000.app.github.dev/api/login
+Content-Type: application/json
+
+{
+  "Email": "bruno@mail.com",
+  "Contraseña": "1234"
+}
+
+### Login
+POST https://reimagined-robot-qrvrj9qp56wfxrp6-5000.app.github.dev/api/login
+Content-Type: application/json
+
+{
+  "Email": "bruno@mail.com",
+  "Contraseña": "12345"
+}
+
+### Login
+POST https://reimagined-robot-qrvrj9qp56wfxrp6-5000.app.github.dev/api/login
+Content-Type: application/json
+
+{
+  "Email": "bruno@test.com",
+  "Contraseña": "1234"
+}
