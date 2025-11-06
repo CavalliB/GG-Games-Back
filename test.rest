@@ -11,7 +11,7 @@ Content-Type: application/json
 ###
 
 ### Login
-POST https://reimagined-robot-qrvrj9qp56wfxrp6-5000.app.github.dev/api/login
+POST http://localhost:5000/api/login
 Content-Type: application/json
 
 {

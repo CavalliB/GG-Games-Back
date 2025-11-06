@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { supabase } from "../Supabase.js";
+import { generateToken } from "../middleware/auth.js";
 
 export const registerUser = async (req, res) => {
   try {
@@ -52,7 +53,27 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ error: "Contraseña incorrecta" });
     }
 
-    res.status(200).json({ message: "Login exitoso", usuario: data });
+    // Generar token
+const token = generateToken({
+  id: data.id,
+  nombreUsuario: data.NombreUsuario
+});
+
+// Guardar token en cookie
+res.cookie("token", token, {
+  httpOnly: true,     
+  secure: false,      // true en HTTPS
+  maxAge: 3600000     // 1 hora
+});
+
+res.status(200).json({
+  message: "Login exitoso",
+  usuario: {
+    id: data.id,
+    nombreUsuario: data.NombreUsuario
+  }
+});
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
