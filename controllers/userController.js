@@ -89,3 +89,38 @@ export const getUsuarios = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Obtener perfil del usuario autenticado
+export const getPerfil = async (req, res) => {
+  try {
+    const { id } = req.user; // viene del token JWT
+
+    const { data, error } = await supabase
+      .from("Usuario")
+      .select("id, NombreUsuario, Email")
+      .eq("id", id)
+      .single();
+
+    if (error) throw error;
+
+    res.status(200).json({ usuario: data });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Cerrar sesión
+export const logoutUser = async (req, res) => {
+  try {
+    // Eliminar la cookie que contiene el token
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: false, // true en HTTPS
+      sameSite: "lax",
+    });
+
+    res.status(200).json({ message: "Sesión cerrada correctamente" });
+  } catch (error) {
+    res.status(500).json({ error: "Error al cerrar sesión" });
+  }
+};

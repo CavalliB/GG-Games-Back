@@ -1,5 +1,5 @@
 import express from "express";
-import { registerUser, getUsuarios, loginUser } from "../controllers/userController.js";
+import { registerUser, getUsuarios, loginUser, getPerfil, logoutUser } from "../controllers/userController.js";
 import { authenticateToken } from "../middleware/auth.js";
 
 const router = express.Router();
@@ -12,5 +12,12 @@ router.post("/login", loginUser);
 
 // Ruta para listar todos los usuarios (protegida)
 router.get("/usuarios",authenticateToken ,getUsuarios);
+
+// Ruta para obtener el perfil del usuario autenticado
+router.get("/perfil", authenticateToken, getPerfil);
+
+// Cerrar sesión
+router.post("/logout", logoutUser); 
+
 
 export default router;

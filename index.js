@@ -16,10 +16,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuración CORS (para permitir cookies)
-app.use(cors({
-  origin: "http://localhost:5000", 
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173", // tu frontend
+    credentials: true, // importante si usas cookies o auth
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());
