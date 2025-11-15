@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import userRoutes from "./routes/userRoutes.js";
+import userRoutes from "./routes/userRoutes.js";   // ← CORREGIDO
+import partidaRoutes from "./routes/partidaRoutes.js"; // ← AGREGADO
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -11,15 +12,14 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Corrección: definir __dirname manualmente en ES Modules
+// Corrección para ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Configuración CORS (para permitir cookies)
 app.use(
   cors({
-    origin: "http://localhost:5173", // tu frontend
-    credentials: true, // importante si usas cookies o auth
+    origin: "http://localhost:5173",
+    credentials: true,
   })
 );
 
@@ -34,12 +34,16 @@ app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "login.html"));
 });
 
-app.use("/api", userRoutes);
+// Rutas API
+app.use("/api", userRoutes);           // rutas de usuario
+app.use("/api/partida", partidaRoutes); // rutas de puntaje
 
 app.get("/", (req, res) => {
   res.send("Servidor funcionando correctamente");
 });
 
+// Siempre al final
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
+export default app;
