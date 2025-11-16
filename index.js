@@ -2,8 +2,9 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import userRoutes from "./routes/userRoutes.js";   // ← CORREGIDO
-import partidaRoutes from "./routes/partidaRoutes.js"; // ← AGREGADO
+import userRoutes from "./routes/userRoutes.js";  
+import partidaRoutes from "./routes/partidaRoutes.js"; 
+import reseñaRoutes from "./routes/reseñaRoutes.js"; 
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -37,6 +38,7 @@ app.get("/login", (req, res) => {
 // Rutas API
 app.use("/api", userRoutes);           // rutas de usuario
 app.use("/api/partida", partidaRoutes); // rutas de puntaje
+app.use("/api/resena", reseñaRoutes); // rutas de reseñas
 
 app.get("/", (req, res) => {
   res.send("Servidor funcionando correctamente");

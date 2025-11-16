@@ -13,11 +13,6 @@ export const guardarPuntaje = async (req, res) => {
             .eq("juego", juegoId)
             .single();
 
-        // Si el error NO es "no se encontró registro", lanzarlo
-        if (selectError && selectError.code !== "PGRST116") {
-            throw selectError;
-        }
-
         // 2. Si no existe registro, se crea uno
         if (!existingScore) {
             const { data, error } = await supabase
@@ -66,11 +61,8 @@ export const guardarPuntaje = async (req, res) => {
     }
 };
 
+// Obtener el mejor puntaje del usuario para un juego
 
-
-// =========================================================
-// 📌 Obtener el mejor puntaje del usuario para un juego
-// =========================================================
 export const obtenerMejorPuntaje = async (req, res) => {
     try {
         const usuarioId = req.user.id;
@@ -92,8 +84,6 @@ export const obtenerMejorPuntaje = async (req, res) => {
     }
 };
 
-
-
 // RANKING
 export const obtenerTablaPuntajes = async (req, res) => {
     try {
@@ -114,4 +104,5 @@ export const obtenerTablaPuntajes = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 
