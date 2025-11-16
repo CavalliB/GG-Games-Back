@@ -14,7 +14,7 @@ export const guardarPuntaje = async (req, res) => {
             .single();
 
         // Si el error NO es "no se encontró registro", lanzarlo
-        if (selectError && selectError.code !== "PGRST116") { 
+        if (selectError && selectError.code !== "PGRST116") {
             throw selectError;
         }
 
@@ -33,9 +33,9 @@ export const guardarPuntaje = async (req, res) => {
 
             if (error) throw error;
 
-            return res.status(201).json({ 
+            return res.status(201).json({
                 message: "Primer puntaje guardado",
-                partida: data 
+                partida: data
             });
         }
 
@@ -49,16 +49,16 @@ export const guardarPuntaje = async (req, res) => {
 
             if (error) throw error;
 
-            return res.json({ 
+            return res.json({
                 message: "Puntaje actualizado (nuevo récord)",
-                partida: data 
+                partida: data
             });
         }
 
         // 4. Si el puntaje es menor o igual, no actualizar
-        res.json({ 
+        res.json({
             message: "No se actualizó: el puntaje no supera el récord actual",
-            recordActual: existingScore.puntuacion 
+            recordActual: existingScore.puntuacion
         });
 
     } catch (error) {
@@ -81,16 +81,37 @@ export const obtenerMejorPuntaje = async (req, res) => {
             .select("puntuacion")
             .eq("jugador", usuarioId)
             .eq("juego", juegoId)
-            .order("puntuacion", { ascending: false })
-            .limit(1);
-
-        if (error) throw error;
+            .single(); // porque solo hay 1 registro por usuario/juego
 
         res.json({
-            mejorPuntaje: data && data.length ? data[0].puntuacion : 0
+            mejorPuntaje: data ? data.puntuacion : 0
         });
 
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
+
+
+// RANKING
+export const obtenerTablaPuntajes = async (req, res) => {
+    try {
+        const { juegoId } = req.params;
+
+        const { data, error } = await supabase
+            .from("Partida")
+            .select("puntuacion, Usuario(id, NombreUsuario)")
+            .eq("juego", juegoId)
+            .order("puntuacion", { ascending: false })
+            .limit(10);
+
+        if (error) return res.status(500).json({ error: "Error obteniendo ranking" });
+
+        res.json(data);
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
