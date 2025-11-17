@@ -44,7 +44,12 @@ app.use("/api/partida", partidaRoutes); // rutas de puntaje
 app.use("/api/resena", reseñaRoutes); // rutas de reseñas
 
 app.get("/", (req, res) => {
-  res.send("Servidor funcionando correctamente");
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
+
+// Fallback para SPA: servir index.html en rutas que no sean API
+app.get(/^(?!\/api).*/, (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 // Siempre al final
