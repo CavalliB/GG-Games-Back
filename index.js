@@ -8,11 +8,12 @@ import reseñaRoutes from "./routes/reseñaRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
-app.use(express.static('dist'))
 
 dotenv.config();
 
 const app = express();
+app.use(express.static('dist'))
+
 const PORT = process.env.PORT || 5000;
 
 // Corrección para ES Modules
